@@ -25,7 +25,7 @@ const Board = () => {
             <div key={k} className='card'>
               <div className='card-header'>{v.date}</div>
               <div className='card-body'>
-                <h5 className='card-title'>{v.title}</h5>
+                <h5 className='card-title'>{v.name}</h5>
                 <p className='card-text'>{v.content}</p>
                 <button className='btn btn-primary'>削除</button>
               </div>
