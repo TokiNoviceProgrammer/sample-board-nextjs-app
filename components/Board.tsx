@@ -6,18 +6,22 @@ const Board = () => {
   const postData = DummyData()
   return (
     <div>
-      <Link style={{ paddingLeft: '20px' }} href='/'>メニューへ</Link>
+      <Link style={{ paddingLeft: '20px' }} href='/'>
+        メニューへ
+      </Link>
       <div style={{ padding: '20px' }}>
         <div>
           <span>タイトル：</span>
           <input type='text'></input>
           <span style={{ marginLeft: '5px' }}>投稿内容：</span>
           <input type='text'></input>
-          <button className='btn btn-primary' style={{ margin: '5px' }}>投稿</button>
+          <button className='btn btn-primary' style={{ margin: '5px' }}>
+            投稿
+          </button>
         </div>
         <hr></hr>
         <div>
-          {postData.map((v, k)=>(
+          {postData.map((v, k) => (
             <div key={k} className='card'>
               <div className='card-header'>{v.date}</div>
               <div className='card-body'>
