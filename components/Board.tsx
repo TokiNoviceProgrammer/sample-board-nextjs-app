@@ -1,9 +1,22 @@
+import { collection, getDocs, onSnapshot } from 'firebase/firestore'
 import Link from 'next/link'
-import React from 'react'
-import DummyData from './DummyData'
+import React, { useEffect, useState } from 'react'
+// import DummyData from './DummyData'
+import db from './Firebase'
+import { settingPostData } from './Function'
+import { PostData } from './Type'
 
 const Board = () => {
-  const postData = DummyData()
+  const [postData, setPostData] = useState<PostData>([])
+  // const dummyPostData = DummyData()
+  const collect = collection(db, 'board')
+  getDocs(collect).then((snapshot) => {
+    settingPostData(snapshot, setPostData)
+  })
+  // NG:リアルタイムでデータを取得・設定
+  onSnapshot(collect, (snapshot) => {
+    settingPostData(snapshot, setPostData)
+  })
   return (
     <div>
       <Link style={{ paddingLeft: '20px' }} href='/'>
