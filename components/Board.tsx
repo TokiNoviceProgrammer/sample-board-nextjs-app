@@ -1,13 +1,15 @@
-import { collection, getDocs, onSnapshot } from 'firebase/firestore'
+import { addDoc, collection, getDocs, onSnapshot } from 'firebase/firestore'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 // import DummyData from './DummyData'
 import db from './Firebase'
-import { settingPostData } from './Function'
+import { formatDate, settingPostData } from './Function'
 import { PostData } from './Type'
 
 const Board = () => {
   const [postData, setPostData] = useState<PostData>([])
+  const [name, setName] = useState('')
+  const [content, setContent] = useState('')
   // const dummyPostData = DummyData()
   useEffect(() => {
     const collect = collection(db, 'board')
@@ -19,6 +21,19 @@ const Board = () => {
       settingPostData(snapshot, setPostData)
     })
   }, [])
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    if (name === '' || content === '') {
+      return
+    }
+    await addDoc(collection(db, 'board'), {
+      date: formatDate(new Date()),
+      name: name,
+      content: content,
+    })
+    setName('')
+    setContent('')
+  }
   return (
     <div>
       <Link style={{ paddingLeft: '20px' }} href='/'>
@@ -26,13 +41,31 @@ const Board = () => {
       </Link>
       <div style={{ padding: '20px' }}>
         <div>
-          <span>タイトル：</span>
-          <input type='text'></input>
-          <span style={{ marginLeft: '5px' }}>投稿内容：</span>
-          <input type='text'></input>
-          <button className='btn btn-primary' style={{ margin: '5px' }}>
-            投稿
-          </button>
+          <form onSubmit={handleSubmit}>
+            <span>タイトル：</span>
+            <input
+              name='name'
+              type='text'
+              placeholder='名前'
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value)
+              }}
+            ></input>
+            <span style={{ marginLeft: '5px' }}>投稿内容：</span>
+            <input
+              name='content'
+              type='text'
+              placeholder='投稿内容'
+              value={content}
+              onChange={(e) => {
+                setContent(e.target.value)
+              }}
+            ></input>
+            <button className='btn btn-primary' style={{ margin: '5px' }}>
+              投稿
+            </button>
+          </form>
         </div>
         <hr></hr>
         <div>

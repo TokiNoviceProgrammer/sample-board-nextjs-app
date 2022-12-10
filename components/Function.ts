@@ -9,7 +9,6 @@ export function convPostDataFromDoc(d: QueryDocumentSnapshot<any>) {
     content: d.data().content as string,
   }
 }
-
 export function settingPostData(
   snapshot: QuerySnapshot<any>,
   setData: Dispatch<SetStateAction<PostData>>,
@@ -30,4 +29,17 @@ export function settingPostData(
  */
 function convNumFromDate(yyyymmddhhmmss: string) {
   return Number(yyyymmddhhmmss.replace(/-|:| /g, ''))
+}
+/**
+ * @param date
+ * @returns yyyy-mm-dd hh:mm:ss
+ */
+export function formatDate(date: Date) {
+  const yyyy = date.getFullYear()
+  const mm = ('00' + (date.getMonth() + 1)).slice(-2)
+  const dd = ('00' + date.getDate()).slice(-2)
+  const h = ('00' + date.getHours()).slice(-2)
+  const m = ('00' + date.getMinutes()).slice(-2)
+  const s = ('00' + date.getSeconds()).slice(-2)
+  return yyyy + '-' + mm + '-' + dd + ' ' + h + ':' + m + ':' + s
 }
