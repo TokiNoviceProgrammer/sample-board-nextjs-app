@@ -41,34 +41,6 @@ const Board = () => {
       </Link>
       <div style={{ padding: '20px' }}>
         <div>
-          <form onSubmit={handleSubmit}>
-            <span>タイトル：</span>
-            <input
-              name='name'
-              type='text'
-              placeholder='名前'
-              value={name}
-              onChange={(e) => {
-                setName(e.target.value)
-              }}
-            ></input>
-            <span style={{ marginLeft: '5px' }}>投稿内容：</span>
-            <input
-              name='content'
-              type='text'
-              placeholder='投稿内容'
-              value={content}
-              onChange={(e) => {
-                setContent(e.target.value)
-              }}
-            ></input>
-            <button className='btn btn-primary' style={{ margin: '5px' }}>
-              投稿
-            </button>
-          </form>
-        </div>
-        <hr></hr>
-        <div>
           {postData.map((v, k) => (
             <div key={k} className='card'>
               <div className='card-header'>{v.date}</div>
@@ -79,6 +51,36 @@ const Board = () => {
               </div>
             </div>
           ))}
+        </div>
+        <hr></hr>
+        <div>
+          <form onSubmit={handleSubmit}>
+            <div>名前</div>
+            <input
+              name='name'
+              type='text'
+              placeholder='名前'
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value)
+              }}
+            ></input>
+            <div>投稿内容</div>
+            <textarea
+              name='content'
+              cols={40}
+              rows={5}
+              value={content}
+              onChange={(e) => {
+                setContent(e.target.value)
+              }}
+            ></textarea>
+            <div>
+              <button className='btn btn-primary' style={{ margin: '5px' }}>
+                投稿
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
