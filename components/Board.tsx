@@ -9,14 +9,16 @@ import { PostData } from './Type'
 const Board = () => {
   const [postData, setPostData] = useState<PostData>([])
   // const dummyPostData = DummyData()
-  const collect = collection(db, 'board')
-  getDocs(collect).then((snapshot) => {
-    settingPostData(snapshot, setPostData)
-  })
-  // NG:リアルタイムでデータを取得・設定
-  onSnapshot(collect, (snapshot) => {
-    settingPostData(snapshot, setPostData)
-  })
+  useEffect(() => {
+    const collect = collection(db, 'board')
+    getDocs(collect).then((snapshot) => {
+      settingPostData(snapshot, setPostData)
+    })
+    // リアルタイムでデータを取得・設定
+    onSnapshot(collect, (snapshot) => {
+      settingPostData(snapshot, setPostData)
+    })
+  }, [])
   return (
     <div>
       <Link style={{ paddingLeft: '20px' }} href='/'>
