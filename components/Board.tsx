@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs, onSnapshot } from 'firebase/firestore'
+import { collection, deleteDoc, doc, getDocs, onSnapshot, setDoc } from 'firebase/firestore'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 // import DummyData from './DummyData'
@@ -21,18 +21,26 @@ const Board = () => {
       settingPostData(snapshot, setPostData)
     })
   }, [])
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function insertHandleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (name === '' || content === '') {
       return
     }
-    await addDoc(collection(db, 'board'), {
-      date: formatDate(new Date()),
+    const yyyymmdd = formatDate(new Date())
+    await setDoc(doc(db, 'board', yyyymmdd), {
+      date: yyyymmdd,
       name: name,
       content: content,
     })
     setName('')
     setContent('')
+  }
+  async function deleteHandleClick(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    if (!('date' in e.target)) {
+      return
+    }
+    await deleteDoc(doc(db, 'board', (e.target['date'] as HTMLInputElement).value))
   }
   return (
     <div>
@@ -40,21 +48,24 @@ const Board = () => {
         メニューへ
       </Link>
       <div style={{ padding: '20px' }}>
-        <div>
-          {postData.map((v, k) => (
+        {postData.map((v, k) => (
+          <form key={k} onSubmit={deleteHandleClick}>
             <div key={k} className='card'>
+              <input type='hidden' name='date' value={v.date} />
               <div className='card-header'>{v.date}</div>
               <div className='card-body'>
                 <h5 className='card-title'>{v.name}</h5>
                 <p className='card-text'>{v.content}</p>
-                <button className='btn btn-primary'>削除</button>
+                <button className='btn btn-primary' value={v.date}>
+                  削除
+                </button>
               </div>
             </div>
-          ))}
-        </div>
+          </form>
+        ))}
         <hr></hr>
         <div>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={insertHandleSubmit}>
             <div>名前</div>
             <input
               name='name'
