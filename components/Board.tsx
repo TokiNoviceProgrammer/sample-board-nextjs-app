@@ -6,7 +6,7 @@ import db from './Firebase'
 import { formatDate, settingPostData } from './Function'
 import { PostData } from './Type'
 
-const Board = () => {
+const Board = (props: { administratorFlg: boolean }) => {
   const [postData, setPostData] = useState<PostData>([])
   const [name, setName] = useState('')
   const [content, setContent] = useState('')
@@ -56,9 +56,11 @@ const Board = () => {
               <div className='card-body'>
                 <h5 className='card-title'>{v.name}</h5>
                 <p className='card-text'>{v.content}</p>
-                <button className='btn btn-primary' value={v.date}>
-                  削除
-                </button>
+                {props.administratorFlg && (
+                  <button className='btn btn-primary' value={v.date}>
+                    削除
+                  </button>
+                )}
               </div>
             </div>
           </form>
