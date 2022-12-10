@@ -14,9 +14,20 @@ export function settingPostData(
   snapshot: QuerySnapshot<any>,
   setData: Dispatch<SetStateAction<PostData>>,
 ) {
-  let post: PostData = []
+  let postData: PostData = []
   snapshot.docs.map((d) => {
-    post.push(convPostDataFromDoc(d))
+    postData.push(convPostDataFromDoc(d))
   })
-  setData(post)
+  postData.sort((a, b) => {
+    return convNumFromDate(a.date) - convNumFromDate(b.date)
+  })
+  setData(postData)
+}
+/**
+ * yyyy-mm-dd hh:mm:ss -> yyyymmddhhmmss
+ * @param yyyymmddhhmmss
+ * @returns
+ */
+function convNumFromDate(yyyymmddhhmmss: string) {
+  return Number(yyyymmddhhmmss.replace(/-|:| /g, ''))
 }
