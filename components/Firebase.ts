@@ -3,11 +3,11 @@ import { getFirestore } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_APIKEY,
-  authDomain: 'sample-next-js-app.firebaseapp.com',
-  projectId: 'sample-next-js-app',
-  storageBucket: 'sample-next-js-app.appspot.com',
-  messagingSenderId: '503645834695',
-  appId: '1:503645834695:web:65b70abc280833312e1de2',
+  authDomain: 'sample-board-app.firebaseapp.com',
+  projectId: 'sample-board-app',
+  storageBucket: 'sample-board-app.appspot.com',
+  messagingSenderId: '849385797341',
+  appId: '1:849385797341:web:243c481302bda8b47ecd34',
 }
 
 const app = initializeApp(firebaseConfig)
