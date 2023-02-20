@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 // import DummyData from './DummyData'
 import db from './Firebase'
 import { formatDate, settingPostData } from './Function'
+import { deleteQuery, setQuery } from './QueryOfFirestore'
 import { PostDataList, UpdatePostDisplayState } from './Type'
 import UpdatePost from './UpdatePost'
 
@@ -33,7 +34,7 @@ const Board = (props: { administratorFlg: boolean }) => {
       return
     }
     const yyyymmdd = formatDate(new Date())
-    await setDoc(doc(db, 'board', yyyymmdd), {
+    setQuery('board', yyyymmdd, {
       date: yyyymmdd,
       name: name,
       content: content,
@@ -46,7 +47,7 @@ const Board = (props: { administratorFlg: boolean }) => {
     if (!('date' in e.target)) {
       return
     }
-    await deleteDoc(doc(db, 'board', (e.target['date'] as HTMLInputElement).value))
+    deleteQuery('board', (e.target['date'] as HTMLInputElement).value)
   }
   return (
     <div>
