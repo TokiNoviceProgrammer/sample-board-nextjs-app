@@ -10,6 +10,11 @@ const UpdatePost = (props: UpdatePostData) => {
     props.setUpdatePostDisplayFlg(false)
   }
 
+  function cancelHandleClick(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    props.setUpdatePostDisplayFlg(false)
+  }
+
   if (!props.updatePostDisplayFlg) {
     return <></>
   }
@@ -36,14 +41,15 @@ const UpdatePost = (props: UpdatePostData) => {
           }}
         />
       </div>
-      <div>
-        <form onSubmit={saveHandleClick} style={{ margin: '5px 5px 5px 5px' }}>
-          <input type='hidden' name='updateDate' defaultValue={props.date} />
-          <input type='hidden' name='updateName' defaultValue={name} />
-          <input type='hidden' name='updateContent' defaultValue={content} />
-          <button className='btn btn-primary'>保存</button>
-        </form>
-      </div>
+      <form onSubmit={saveHandleClick} style={{ margin: '5px 5px 5px 5px' }}>
+        <input type='hidden' name='updateDate' defaultValue={props.date} />
+        <input type='hidden' name='updateName' defaultValue={name} />
+        <input type='hidden' name='updateContent' defaultValue={content} />
+        <button className='btn btn-primary'>保存</button>
+      </form>
+      <form onSubmit={cancelHandleClick} style={{ margin: '5px 5px 5px 5px' }}>
+        <button className='btn btn-primary'>キャンセル</button>
+      </form>
     </div>
   )
 }
