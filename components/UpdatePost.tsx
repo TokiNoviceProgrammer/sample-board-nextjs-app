@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { UpdatePostData } from './Type'
 
 const UpdatePost = (props: UpdatePostData) => {
-  const [date, setDate] = useState(props.date)
   const [name, setName] = useState(props.name)
   const [content, setContent] = useState(props.content)
 
@@ -16,39 +15,34 @@ const UpdatePost = (props: UpdatePostData) => {
   }
   return (
     <div className='card'>
-      <input
-        type='text'
-        className='card-header'
-        defaultValue={date}
-        onChange={(e) => {
-          setDate(e.target.value)
-        }}
-      />
-      <div className='card-body'>
+      <div style={{ margin: '5px 5px 5px 5px' }}>
+        <div>名前</div>
         <input
           type='text'
-          className='card-title'
           defaultValue={name}
           onChange={(e) => {
             setName(e.target.value)
           }}
         />
+      </div>
+      <div style={{ margin: '5px 5px 5px 5px' }}>
+        <div>投稿内容</div>
         <input
+          style={{ display: 'flex' }}
           type='text'
-          className='card-text'
           defaultValue={content}
           onChange={(e) => {
             setContent(e.target.value)
           }}
         />
-        <div style={{ display: 'flex' }}>
-          <form onSubmit={saveHandleClick}>
-            <input type='hidden' name='updateDate' defaultValue={date} />
-            <input type='hidden' name='updateName' defaultValue={name} />
-            <input type='hidden' name='updateContent' defaultValue={content} />
-            <button className='btn btn-primary'>保存</button>
-          </form>
-        </div>
+      </div>
+      <div>
+        <form onSubmit={saveHandleClick} style={{ margin: '5px 5px 5px 5px' }}>
+          <input type='hidden' name='updateDate' defaultValue={props.date} />
+          <input type='hidden' name='updateName' defaultValue={name} />
+          <input type='hidden' name='updateContent' defaultValue={content} />
+          <button className='btn btn-primary'>保存</button>
+        </form>
       </div>
     </div>
   )
