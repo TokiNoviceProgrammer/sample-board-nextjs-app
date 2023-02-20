@@ -1,6 +1,6 @@
 import { QueryDocumentSnapshot, QuerySnapshot } from 'firebase/firestore'
 import { Dispatch, SetStateAction } from 'react'
-import { PostDataList } from './Type'
+import { PostDataList, UpdatePostDisplayState } from './Type'
 
 export function convPostDataFromDoc(d: QueryDocumentSnapshot<any>) {
   return {
@@ -12,10 +12,14 @@ export function convPostDataFromDoc(d: QueryDocumentSnapshot<any>) {
 export function settingPostData(
   snapshot: QuerySnapshot<any>,
   setData: Dispatch<SetStateAction<PostDataList>>,
+  updatePostDisplayState: UpdatePostDisplayState,
+  setUdatePostDisplayState: Dispatch<UpdatePostDisplayState>,
 ) {
   let postData: PostDataList = []
+  setUdatePostDisplayState({})
   snapshot.docs.map((d) => {
     postData.push(convPostDataFromDoc(d))
+    setUdatePostDisplayState({ ...updatePostDisplayState, [d.data().date]: false })
   })
   postData.sort((a, b) => {
     return convNumFromDate(a.date) - convNumFromDate(b.date)

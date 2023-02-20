@@ -6,7 +6,10 @@ export interface PostData {
   content: string
 }
 export interface UpdatePostData extends PostData {
-  updatePostDisplayFlg: boolean
-  setUpdatePostDisplayFlg: Dispatch<SetStateAction<boolean>>
+  updatePostDisplayState: UpdatePostDisplayState
+  setUpdatePostDisplayState: Dispatch<SetStateAction<UpdatePostDisplayState>>
 }
 export type PostDataList = PostData[]
+export type UpdatePostDisplayState = {
+  [date: string]: boolean
+}

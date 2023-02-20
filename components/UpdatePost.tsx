@@ -7,15 +7,18 @@ const UpdatePost = (props: UpdatePostData) => {
 
   async function saveHandleClick(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    props.setUpdatePostDisplayFlg(false)
+    // 投稿年月日時間をキーに編集中（true）から未編集（false）へ更新
+    props.setUpdatePostDisplayState({ ...props.updatePostDisplayState, [props.date]: false })
   }
 
   function cancelHandleClick(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    props.setUpdatePostDisplayFlg(false)
+    // 投稿年月日時間をキーに編集中（true）から未編集（false）へ更新
+    props.setUpdatePostDisplayState({ ...props.updatePostDisplayState, [props.date]: false })
   }
 
-  if (!props.updatePostDisplayFlg) {
+  if (!props.updatePostDisplayState[props.date]) {
+    // 未編集（false）の場合、何も表示しない
     return <></>
   }
   return (

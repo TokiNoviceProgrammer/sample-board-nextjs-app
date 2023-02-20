@@ -4,24 +4,28 @@ import React, { useEffect, useState } from 'react'
 // import DummyData from './DummyData'
 import db from './Firebase'
 import { formatDate, settingPostData } from './Function'
-import { PostDataList } from './Type'
+import { PostDataList, UpdatePostDisplayState } from './Type'
 import UpdatePost from './UpdatePost'
 
 const Board = (props: { administratorFlg: boolean }) => {
   const [postData, setPostData] = useState<PostDataList>([])
   const [name, setName] = useState('')
   const [content, setContent] = useState('')
-  const [updatePostDisplayFlg, setUpdatePostDisplayFlg] = useState(false)
-  // const dummyPostData = DummyData()
+  // 編集中か否かを投稿年月日時間をキーに管理
+  const [updatePostDisplayState, setUpdatePostDisplayState] = useState<UpdatePostDisplayState>({})
+
   useEffect(() => {
     const collect = collection(db, 'board')
     getDocs(collect).then((snapshot) => {
-      settingPostData(snapshot, setPostData)
+      settingPostData(snapshot, setPostData, updatePostDisplayState, setUpdatePostDisplayState)
     })
     // リアルタイムでデータを取得・設定
     onSnapshot(collect, (snapshot) => {
-      settingPostData(snapshot, setPostData)
+      settingPostData(snapshot, setPostData, updatePostDisplayState, setUpdatePostDisplayState)
     })
+    // 依存関係を指定しないまま関数を記述しているとESLintが警告を出すため
+    // 以下の部分のみESLintのルールを無効化
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   async function insertHandleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -59,17 +63,19 @@ const Board = (props: { administratorFlg: boolean }) => {
               {props.administratorFlg && (
                 <div style={{ display: 'flex' }}>
                   <button
-                    style={{ display: updatePostDisplayFlg ? 'none' : '' }}
+                    // 編集中（true）の場合、ボタンを非表示
+                    style={{ display: updatePostDisplayState[v.date] ? 'none' : '' }}
                     className='btn btn-primary'
                     onClick={() => {
-                      setUpdatePostDisplayFlg(true)
+                      // 投稿年月日時間をキーに編集中（true）へ更新
+                      setUpdatePostDisplayState({ ...updatePostDisplayState, [v.date]: true })
                     }}
                   >
                     編集
                   </button>
                   <UpdatePost
-                    updatePostDisplayFlg={updatePostDisplayFlg}
-                    setUpdatePostDisplayFlg={setUpdatePostDisplayFlg}
+                    updatePostDisplayState={updatePostDisplayState}
+                    setUpdatePostDisplayState={setUpdatePostDisplayState}
                     date={v.date}
                     name={v.name}
                     content={v.content}
@@ -83,7 +89,8 @@ const Board = (props: { administratorFlg: boolean }) => {
                     <button
                       className='btn btn-primary'
                       value={v.date}
-                      style={{ display: updatePostDisplayFlg ? 'none' : '' }}
+                      // 編集中（true）の場合、ボタンを非表示
+                      style={{ display: updatePostDisplayState[v.date] ? 'none' : '' }}
                     >
                       削除
                     </button>
