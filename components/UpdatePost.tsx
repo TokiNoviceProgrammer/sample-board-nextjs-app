@@ -1,3 +1,4 @@
+import { setQuery } from './QueryOfFirestore'
 import { UpdatePostData } from './Type'
 
 const UpdatePost = (props: UpdatePostData) => {
@@ -5,6 +6,16 @@ const UpdatePost = (props: UpdatePostData) => {
     e.preventDefault()
     // 投稿年月日時間をキーに編集中（true）から未編集（false）へ更新
     props.setUpdatePostDisplayState({ ...props.updatePostDisplayState, [props.date]: false })
+    // 更新処理
+    if (!('date' in e.target) || !('name' in e.target) || !('content' in e.target)) {
+      console.log('更新処理', e.target)
+      return
+    }
+    setQuery('board', (e.target['date'] as HTMLInputElement).value, {
+      date: (e.target['date'] as HTMLInputElement).value,
+      name: (e.target['name'] as HTMLInputElement).value,
+      content: (e.target['content'] as HTMLInputElement).value,
+    })
   }
 
   function cancelHandleClick(e: React.FormEvent<HTMLFormElement>) {
