@@ -4,12 +4,14 @@ import React, { useEffect, useState } from 'react'
 // import DummyData from './DummyData'
 import db from './Firebase'
 import { formatDate, settingPostData } from './Function'
-import { PostData } from './Type'
+import { PostDataList } from './Type'
+import UpdatePost from './UpdatePost'
 
 const Board = (props: { administratorFlg: boolean }) => {
-  const [postData, setPostData] = useState<PostData>([])
+  const [postData, setPostData] = useState<PostDataList>([])
   const [name, setName] = useState('')
   const [content, setContent] = useState('')
+  const [updatePostDisplayFlg, setUpdatePostDisplayFlg] = useState(false)
   // const dummyPostData = DummyData()
   useEffect(() => {
     const collect = collection(db, 'board')
@@ -49,21 +51,47 @@ const Board = (props: { administratorFlg: boolean }) => {
       </Link>
       <div style={{ padding: '20px' }}>
         {postData.map((v, k) => (
-          <form key={k} onSubmit={deleteHandleClick}>
-            <div key={k} className='card'>
-              <input type='hidden' name='date' value={v.date} />
-              <div className='card-header'>{v.date}</div>
-              <div className='card-body'>
-                <h5 className='card-title'>{v.name}</h5>
-                <p className='card-text'>{v.content}</p>
-                {props.administratorFlg && (
-                  <button className='btn btn-primary' value={v.date}>
-                    削除
+          <div key={k} className='card'>
+            <div className='card-header'>{v.date}</div>
+            <div className='card-body'>
+              <h5 className='card-title'>{v.name}</h5>
+              <p className='card-text'>{v.content}</p>
+              {props.administratorFlg && (
+                <div style={{ display: 'flex' }}>
+                  <button
+                    style={{ display: updatePostDisplayFlg ? 'none' : '' }}
+                    className='btn btn-primary'
+                    onClick={() => {
+                      setUpdatePostDisplayFlg(true)
+                    }}
+                  >
+                    編集
                   </button>
-                )}
-              </div>
+                  <UpdatePost
+                    updatePostDisplayFlg={updatePostDisplayFlg}
+                    setUpdatePostDisplayFlg={setUpdatePostDisplayFlg}
+                    date={v.date}
+                    name={v.name}
+                    content={v.content}
+                  />
+                  <form
+                    key={k + 1}
+                    onSubmit={deleteHandleClick}
+                    style={{ margin: '0px 0px 0px 60px' }}
+                  >
+                    <input type='hidden' name='date' value={v.date} />
+                    <button
+                      className='btn btn-primary'
+                      value={v.date}
+                      style={{ display: updatePostDisplayFlg ? 'none' : '' }}
+                    >
+                      削除
+                    </button>
+                  </form>
+                </div>
+              )}
             </div>
-          </form>
+          </div>
         ))}
         <hr></hr>
         <div>

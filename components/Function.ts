@@ -1,6 +1,6 @@
 import { QueryDocumentSnapshot, QuerySnapshot } from 'firebase/firestore'
 import { Dispatch, SetStateAction } from 'react'
-import { PostData } from './Type'
+import { PostDataList } from './Type'
 
 export function convPostDataFromDoc(d: QueryDocumentSnapshot<any>) {
   return {
@@ -11,9 +11,9 @@ export function convPostDataFromDoc(d: QueryDocumentSnapshot<any>) {
 }
 export function settingPostData(
   snapshot: QuerySnapshot<any>,
-  setData: Dispatch<SetStateAction<PostData>>,
+  setData: Dispatch<SetStateAction<PostDataList>>,
 ) {
-  let postData: PostData = []
+  let postData: PostDataList = []
   snapshot.docs.map((d) => {
     postData.push(convPostDataFromDoc(d))
   })
