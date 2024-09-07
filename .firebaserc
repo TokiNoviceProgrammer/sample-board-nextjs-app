@@ -1,5 +1,5 @@
 {
   "projects": {
-    "default": "sample-board-app"
+    "default": "sample-board-nextjs-app"
   }
 }

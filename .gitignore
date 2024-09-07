@@ -37,3 +37,6 @@ next-env.d.ts
 
 #firebase
 .firebase
+
+# 環境変数
+.env
