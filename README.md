@@ -32,3 +32,10 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## アプリの補足
+クライアントサイドレンダリング（CSR)を行って、リアルタイム更新を実現してる。
+useEffectフックを使って、Firebase Firestoreからデータをリアルタイムで取得し、onSnapshotを使用してデータの変更を検知している。
+これにより、Firestore内のデータが変更されるたびに、自動的に画面が更新される。
+Firebaseのリアルタイム更新機能を利用して、サーバー側のデータの変更をクライアントが即座に受取る仕組みになっているが、
+この動作はクライアントサイドで行われる。
